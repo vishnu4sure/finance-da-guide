@@ -1,0 +1,602 @@
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:#0f1117;color:#e2e8f0;min-height:100vh}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,#1a1f35 0%,#0d1b2a 100%);border:1px solid #1e3a5f;padding:2rem 1.5rem;border-radius:16px;margin-bottom:1.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(56,139,253,0.15),transparent 70%);pointer-events:none}
+.hero h1{font-size:22px;font-weight:600;color:#fff;margin-bottom:6px;letter-spacing:-0.3px}
+.hero p{font-size:13px;color:#7d9bc0}
+.hero-tags{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.hero-tag{font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(56,139,253,0.12);border:1px solid rgba(56,139,253,0.3);color:#6ba3d6}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:1.5rem;flex-wrap:wrap;background:#161b27;padding:6px;border-radius:12px;border:1px solid #1e2d45}
+.tab{padding:8px 16px;border:none;border-radius:8px;font-size:13px;cursor:pointer;background:transparent;color:#6b7fa3;transition:all 0.25s ease;font-weight:500}
+.tab:hover{background:#1e2d45;color:#a8c0e0}
+.tab.active{background:linear-gradient(135deg,#1a4b8c,#1565c0);color:#fff;box-shadow:0 2px 12px rgba(21,101,192,0.4)}
+
+/* Sections */
+.section{display:none;animation:fadeIn 0.3s ease}.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:#161b27;border:1px solid #1e2d45;border-radius:14px;padding:1.25rem;margin-bottom:1rem;transition:border-color 0.2s,box-shadow 0.2s}
+.card:hover{border-color:#2a4a7f;box-shadow:0 4px 20px rgba(21,101,192,0.1)}
+.card h3{font-size:15px;font-weight:600;color:#e2e8f0;margin-bottom:6px}
+.card p{font-size:13px;color:#7d9bc0;line-height:1.6}
+
+/* Badges */
+.badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;margin:3px 3px 3px 0;font-weight:500}
+.b-blue{background:rgba(56,139,253,0.15);color:#79b8ff;border:1px solid rgba(56,139,253,0.25)}
+.b-green{background:rgba(63,185,80,0.12);color:#56d364;border:1px solid rgba(63,185,80,0.2)}
+.b-amber{background:rgba(210,153,34,0.12);color:#e3b341;border:1px solid rgba(210,153,34,0.2)}
+.b-purple{background:rgba(139,92,246,0.12);color:#a78bfa;border:1px solid rgba(139,92,246,0.2)}
+.role-tag{font-size:11px;padding:3px 12px;border-radius:20px;background:rgba(56,139,253,0.12);border:1px solid rgba(56,139,253,0.25);color:#79b8ff;font-weight:500;float:right}
+
+/* Tool nav */
+.tool-nav{display:flex;gap:6px;margin-bottom:1.2rem;flex-wrap:wrap}
+.tnav{padding:7px 16px;border:1px solid #1e2d45;border-radius:8px;font-size:13px;cursor:pointer;background:#161b27;color:#6b7fa3;transition:all 0.2s ease;font-weight:500}
+.tnav:hover{border-color:#2a4a7f;color:#a8c0e0;background:#1a2236}
+.tnav.active{background:linear-gradient(135deg,#1a4b8c,#1565c0);color:#fff;border-color:transparent;box-shadow:0 2px 10px rgba(21,101,192,0.35)}
+
+/* Topic accordion */
+.tool-section{display:none}.tool-section.active{display:block;animation:fadeIn 0.25s ease}
+.topic-card{border:1px solid #1e2d45;border-radius:12px;margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
+.topic-card:hover{border-color:#2a4a7f}
+.topic-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;background:#161b27;transition:background 0.2s}
+.topic-header:hover{background:#1a2236}
+.topic-title{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:#c9d8ef}
+.topic-body{display:none;padding:14px 16px;border-top:1px solid #1e2d45;background:#0f1420}
+.topic-body.open{display:block;animation:fadeIn 0.2s ease}
+.arrow{color:#4a6a9e;transition:transform 0.25s ease;font-size:12px}
+.topic-header.open .arrow{transform:rotate(180deg)}
+.lesson{padding:8px 0;border-bottom:1px solid #1a2236;font-size:13px;color:#7d9bc0;line-height:1.6}
+.lesson:last-child{border-bottom:none}
+.lesson strong{color:#c9d8ef;display:block;margin-bottom:2px;font-weight:500}
+
+/* Code blocks */
+.code-block{background:#0a0d14;color:#cdd6f4;padding:13px 14px;border-radius:10px;font-family:var(--font-mono);font-size:12px;line-height:1.7;margin:8px 0;overflow-x:auto;white-space:pre;border:1px solid #1a2236}
+.kw{color:#cba6f7}.fn{color:#89b4fa}.str{color:#a6e3a1}.cm{color:#45475a;font-style:italic}.num{color:#fab387}
+
+/* Tip */
+.tip{background:rgba(56,139,253,0.08);border-left:3px solid #1565c0;padding:8px 12px;border-radius:0 8px 8px 0;font-size:12px;color:#6ba3d6;margin-top:8px}
+
+/* Try it */
+.tryit{margin-top:12px;border:1px solid #1e2d45;border-radius:12px;overflow:hidden}
+.tryit-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#0a0d14;border-bottom:1px solid #1a2236}
+.tryit-header span{font-size:12px;color:#4a6a9e;font-weight:500}
+.tryit-btns{display:flex;gap:6px}
+.tryit-btn{font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid #1e2d45;background:#161b27;color:#6b7fa3;cursor:pointer;transition:all 0.2s ease;font-weight:500}
+.tryit-btn:hover{background:#1e2d45;color:#a8c0e0;transform:translateY(-1px)}
+.tryit-btn.run{background:linear-gradient(135deg,#1a6b3c,#1a9b50);border-color:#1a9b50;color:#fff}
+.tryit-btn.run:hover{background:linear-gradient(135deg,#1a9b50,#22c55e);box-shadow:0 2px 10px rgba(34,197,94,0.3);transform:translateY(-1px)}
+.tryit-btn:active{transform:scale(0.97)}
+.tryit-editor{width:100%;min-height:90px;padding:10px 12px;background:#0a0d14;color:#cdd6f4;font-family:var(--font-mono);font-size:12px;line-height:1.7;border:none;resize:vertical;outline:none;tab-size:2}
+.tryit-output{padding:10px 12px;background:#06080f;font-family:var(--font-mono);font-size:12px;line-height:1.7;min-height:36px;border-top:1px solid #1a2236;white-space:pre}
+.out-success{color:#56d364}.out-error{color:#f85149}.out-info{color:#4a6a9e}.out-warn{color:#e3b341}
+.tryit-challenge{padding:8px 12px;background:rgba(210,153,34,0.07);font-size:12px;color:#e3b341;border-top:1px solid rgba(210,153,34,0.15)}
+.tryit-challenge strong{display:block;margin-bottom:2px;color:#f0c040}
+
+/* Excel sim */
+.xl-grid{width:100%;border-collapse:collapse;font-size:12px;margin:8px 0}
+.xl-grid th{background:#1a2236;color:#6ba3d6;padding:5px 8px;border:1px solid #1e2d45;font-weight:500;text-align:center;min-width:80px}
+.xl-grid td{border:1px solid #1a2236;padding:0}
+.xl-grid td input{width:100%;padding:4px 6px;border:none;background:transparent;font-family:var(--font-mono);font-size:12px;color:#c9d8ef;outline:none}
+.xl-grid td input:focus{background:rgba(56,139,253,0.08)}
+.xl-result{padding:8px 12px;background:#0a0d14;font-size:13px;color:#79b8ff;border-top:1px solid #1a2236}
+
+/* Roadmap */
+.step{display:flex;gap:12px;margin-bottom:1rem;align-items:flex-start}
+.step-num{min-width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#1a4b8c,#1565c0);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;box-shadow:0 2px 8px rgba(21,101,192,0.3)}
+.step-body h4{font-size:14px;font-weight:500;color:#c9d8ef;margin-bottom:4px}
+.step-body p{font-size:13px;color:#7d9bc0;line-height:1.5}
+
+/* Resources */
+.resource-card{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1a2236;transition:background 0.2s;cursor:default}
+.resource-card:last-child{border-bottom:none}
+.res-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.res-info{flex:1}.res-info h4{font-size:13px;font-weight:500;color:#c9d8ef}.res-info p{font-size:12px;color:#4a6a9e}
+.free-tag{font-size:11px;padding:2px 10px;border-radius:20px;background:rgba(63,185,80,0.12);color:#56d364;border:1px solid rgba(63,185,80,0.2);font-weight:500;white-space:nowrap}
+.paid-tag{font-size:11px;padding:2px 10px;border-radius:20px;background:rgba(210,153,34,0.12);color:#e3b341;border:1px solid rgba(210,153,34,0.2);font-weight:500;white-space:nowrap}
+
+/* Quiz */
+.progress-bar{height:5px;background:#1a2236;border-radius:3px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#1a4b8c,#2196f3);border-radius:3px;transition:width 0.4s ease}
+.quiz-q{font-size:15px;font-weight:500;color:#e2e8f0;margin-bottom:1rem;line-height:1.5}
+.opt{display:block;width:100%;text-align:left;padding:10px 14px;margin-bottom:8px;border:1px solid #1e2d45;border-radius:10px;font-size:13px;cursor:pointer;background:#161b27;color:#c9d8ef;transition:all 0.2s ease}
+.opt:hover{background:#1a2236;border-color:#2a4a7f;transform:translateX(3px)}
+.opt.correct{background:rgba(63,185,80,0.12);border-color:rgba(63,185,80,0.4);color:#56d364}
+.opt.wrong{background:rgba(248,81,73,0.1);border-color:rgba(248,81,73,0.3);color:#f85149}
+.quiz-feedback{font-size:13px;padding:10px 14px;border-radius:10px;margin-top:8px;display:none;line-height:1.5}
+.quiz-feedback.show{display:block}
+.feedback-correct{background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.2);color:#56d364}
+.feedback-wrong{background:rgba(248,81,73,0.08);border:1px solid rgba(248,81,73,0.2);color:#f85149}
+.score-box{text-align:center;padding:2rem;background:#161b27;border-radius:14px;border:1px solid #1e2d45}
+.score-box h2{font-size:42px;font-weight:700;background:linear-gradient(135deg,#79b8ff,#2196f3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.score-box p{font-size:14px;color:#7d9bc0;margin-top:8px}
+
+/* DAX cards */
+.dax-metric{background:#0f1420;padding:10px 14px;border-radius:10px;border:1px solid #1e2d45;font-size:12px;flex:1;min-width:110px}
+.dax-label{color:#4a6a9e;font-weight:500;margin-bottom:4px}
+.dax-val{font-size:18px;font-weight:600}
+
+/* Input style override for dark */
+input[type=number],input[type=text]{background:#0f1420;border:1px solid #1e2d45;color:#c9d8ef;border-radius:6px;padding:5px 8px;font-size:12px;outline:none;transition:border-color 0.2s}
+input[type=number]:focus,input[type=text]:focus{border-color:#2a4a7f}
+</style>
+
+<div class="hero">
+  <h1>Finance Data Analyst Career Guide</h1>
+  <p>Your complete roadmap to becoming a Data Analyst in the Finance sector</p>
+  <div class="hero-tags">
+    <span class="hero-tag">Excel</span>
+    <span class="hero-tag">SQL</span>
+    <span class="hero-tag">Python</span>
+    <span class="hero-tag">Power BI</span>
+    <span class="hero-tag">Live Playgrounds</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('roles',this)">📋 Roles</button>
+  <button class="tab" onclick="showTab('tools',this)">🛠 Learn & Practice</button>
+  <button class="tab" onclick="showTab('skills',this)">🗺 Roadmap</button>
+  <button class="tab" onclick="showTab('resources',this)">📚 Resources</button>
+  <button class="tab" onclick="showTab('quiz',this)">🧠 Quiz</button>
+</div>
+
+<!-- ROLES -->
+<div class="section active" id="roles">
+  <div class="card"><span class="role-tag">Entry Level</span><h3>Junior Data Analyst</h3><p>Collect, clean, and organize financial data. Create basic reports and dashboards for finance teams.</p><div style="margin-top:10px"><span class="badge b-blue">Excel</span><span class="badge b-blue">SQL</span><span class="badge b-blue">Basic Python</span><span class="badge b-green">₹4–7 LPA</span></div></div>
+  <div class="card"><span class="role-tag">Mid Level</span><h3>Financial Data Analyst</h3><p>Analyze revenue, expense, and investment trends. Build financial models and provide strategic insights.</p><div style="margin-top:10px"><span class="badge b-blue">SQL</span><span class="badge b-blue">Python</span><span class="badge b-blue">Power BI</span><span class="badge b-blue">Financial Modeling</span><span class="badge b-green">₹8–14 LPA</span></div></div>
+  <div class="card"><span class="role-tag">Mid Level</span><h3>Risk Analyst</h3><p>Identify and quantify financial risks using data. Work with banks, insurance, and investment firms.</p><div style="margin-top:10px"><span class="badge b-blue">Statistics</span><span class="badge b-blue">Python/R</span><span class="badge b-blue">Risk Models</span><span class="badge b-green">₹9–15 LPA</span></div></div>
+  <div class="card"><span class="role-tag">Senior Level</span><h3>BI Analyst</h3><p>Build enterprise dashboards and data pipelines. Translate complex data into actionable strategy.</p><div style="margin-top:10px"><span class="badge b-blue">Power BI</span><span class="badge b-blue">SQL</span><span class="badge b-blue">ETL</span><span class="badge b-green">₹12–20 LPA</span></div></div>
+  <div class="card"><span class="role-tag">Senior Level</span><h3>Quantitative Analyst</h3><p>Use advanced math and algorithms to analyze financial markets and build investment models.</p><div style="margin-top:10px"><span class="badge b-blue">Python</span><span class="badge b-blue">R</span><span class="badge b-blue">Statistics</span><span class="badge b-blue">ML</span><span class="badge b-green">₹18–35 LPA</span></div></div>
+</div>
+
+<!-- LEARN & PRACTICE -->
+<div class="section" id="tools">
+  <div class="tool-nav">
+    <button class="tnav active" onclick="showTool('excel',this)">📗 Excel</button>
+    <button class="tnav" onclick="showTool('sql',this)">🗄 SQL</button>
+    <button class="tnav" onclick="showTool('python',this)">🐍 Python</button>
+    <button class="tnav" onclick="showTool('powerbi',this)">📊 Power BI</button>
+  </div>
+
+  <!-- EXCEL -->
+  <div class="tool-section active" id="excel">
+    <div class="card"><h3>Excel for Finance</h3><p>The #1 tool in finance. Edit values in the simulators below and watch results update live.</p></div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">1</span> SUM, AVERAGE, COUNT</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>What it does</strong>SUM adds numbers, AVERAGE finds the mean, COUNT counts cells with numbers.</div>
+        <div class="lesson"><strong>Syntax</strong><div class="code-block">=SUM(B2:B6)      <span class="cm">→ adds B2 to B6</span>
+=AVERAGE(B2:B6)  <span class="cm">→ average of range</span>
+=COUNT(B2:B6)    <span class="cm">→ count of numbers</span></div></div>
+        <div class="tryit">
+          <div class="tryit-header"><span>📗 Live Excel Simulator</span></div>
+          <div style="overflow-x:auto;background:#0a0d14;padding:8px">
+            <table class="xl-grid">
+              <tr><th>Month</th><th>Revenue (₹)</th></tr>
+              <tr><td><input value="January" readonly style="color:#4a6a9e"></td><td><input id="xl1b1" value="120000" oninput="xlCalc()"></td></tr>
+              <tr><td><input value="February" readonly style="color:#4a6a9e"></td><td><input id="xl1b2" value="135000" oninput="xlCalc()"></td></tr>
+              <tr><td><input value="March" readonly style="color:#4a6a9e"></td><td><input id="xl1b3" value="98000" oninput="xlCalc()"></td></tr>
+              <tr><td><input value="April" readonly style="color:#4a6a9e"></td><td><input id="xl1b4" value="152000" oninput="xlCalc()"></td></tr>
+              <tr><td><input value="May" readonly style="color:#4a6a9e"></td><td><input id="xl1b5" value="141000" oninput="xlCalc()"></td></tr>
+            </table>
+          </div>
+          <div class="xl-result" id="xl1-result"></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Change March to 200000. What is the new total and average?</div>
+        </div>
+        <div class="tip">💡 Practice: Download your bank statement as CSV and SUM all debit transactions.</div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">2</span> IF & SUMIF</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>What it does</strong>IF returns different values based on a condition. SUMIF sums only matching rows.</div>
+        <div class="lesson"><strong>Syntax</strong><div class="code-block">=IF(B2>10000,"High","Low")
+=SUMIF(C:C,"Food",D:D)</div></div>
+        <div class="tryit">
+          <div class="tryit-header"><span>📗 IF Formula Tester</span></div>
+          <div style="overflow-x:auto;background:#0a0d14;padding:8px">
+            <table class="xl-grid">
+              <tr><th>Expense</th><th>Amount (₹)</th><th>IF Result</th></tr>
+              <tr><td><input value="Rent" readonly style="color:#4a6a9e"></td><td><input id="ifb1" value="45000" oninput="ifCalc()"></td><td><input id="ifc1" readonly style="color:#79b8ff"></td></tr>
+              <tr><td><input value="Food" readonly style="color:#4a6a9e"></td><td><input id="ifb2" value="8000" oninput="ifCalc()"></td><td><input id="ifc2" readonly style="color:#79b8ff"></td></tr>
+              <tr><td><input value="Travel" readonly style="color:#4a6a9e"></td><td><input id="ifb3" value="22000" oninput="ifCalc()"></td><td><input id="ifc3" readonly style="color:#79b8ff"></td></tr>
+              <tr><td><input value="Utilities" readonly style="color:#4a6a9e"></td><td><input id="ifb4" value="5000" oninput="ifCalc()"></td><td><input id="ifc4" readonly style="color:#79b8ff"></td></tr>
+            </table>
+          </div>
+          <div style="padding:8px 12px;background:#0a0d14;font-size:12px;border-top:1px solid #1a2236;color:#7d9bc0">
+            Threshold: <input id="if-threshold" type="number" value="10000" oninput="ifCalc()" style="width:80px"> → High if amount exceeds threshold
+          </div>
+          <div class="xl-result" id="if-result"></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Set threshold to 20000. Which expenses are "High"?</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-amber">3</span> NPV & PMT — Finance Functions</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>What it does</strong>NPV = Net Present Value of future cash flows. PMT = monthly loan/EMI payment.</div>
+        <div class="tryit">
+          <div class="tryit-header"><span>📗 NPV & EMI Calculator</span></div>
+          <div style="padding:14px;background:#0a0d14">
+            <div style="margin-bottom:14px">
+              <div style="font-size:12px;font-weight:500;color:#c9d8ef;margin-bottom:8px">NPV Calculator</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Discount Rate (%)</label><input id="npv-rate" type="number" value="10" oninput="npvCalc()" style="width:90px"></div>
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Year 1 Cash Flow</label><input id="npv-y1" type="number" value="50000" oninput="npvCalc()" style="width:100px"></div>
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Year 2</label><input id="npv-y2" type="number" value="60000" oninput="npvCalc()" style="width:100px"></div>
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Year 3</label><input id="npv-y3" type="number" value="70000" oninput="npvCalc()" style="width:100px"></div>
+              </div>
+              <div id="npv-result" style="font-size:13px;padding:7px 10px;background:rgba(56,139,253,0.08);border:1px solid rgba(56,139,253,0.2);border-radius:8px;color:#79b8ff"></div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:500;color:#c9d8ef;margin-bottom:8px">Loan EMI Calculator</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Loan Amount (₹)</label><input id="pmt-p" type="number" value="1000000" oninput="pmtCalc()" style="width:110px"></div>
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Annual Rate (%)</label><input id="pmt-r" type="number" value="8" oninput="pmtCalc()" style="width:90px"></div>
+                <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Years</label><input id="pmt-n" type="number" value="5" oninput="pmtCalc()" style="width:70px"></div>
+              </div>
+              <div id="pmt-result" style="font-size:13px;padding:7px 10px;background:rgba(63,185,80,0.08);border:1px solid rgba(63,185,80,0.2);border-radius:8px;color:#56d364"></div>
+            </div>
+          </div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> What is the EMI for a ₹5,00,000 loan at 12% for 3 years?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SQL -->
+  <div class="tool-section" id="sql">
+    <div class="card"><h3>SQL for Finance</h3><p>Write real SQL queries and run them against a live transactions table. Results appear instantly.</p></div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">1</span> SELECT & WHERE</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>Sample table: transactions</strong><div class="code-block">id | customer  | category | amount | month
+1  | Priya     | Food     | 4500   | Jan
+2  | Ravi      | Travel   | 22000  | Jan
+3  | Ananya    | Food     | 3200   | Feb
+4  | Karthik   | Housing  | 45000  | Feb
+5  | Priya     | Travel   | 8000   | Mar
+6  | Ravi      | Food     | 5100   | Mar</div></div>
+        <div class="tryit">
+          <div class="tryit-header"><span>🗄 SQL Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetSQL('sq1')">↺ Reset</button><button class="tryit-btn run" onclick="runSQL('sq1')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="sq1">SELECT * FROM transactions WHERE amount > 5000</textarea>
+          <div class="tryit-output" id="sq1-out"><span class="out-info">Press ▶ Run to execute your query</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Get only Food category transactions. Hint: WHERE category = 'Food'</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">2</span> GROUP BY & Aggregates</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>What to learn</strong>Summarize data with SUM, COUNT, AVG grouped by a category — SQL's Pivot Table.</div>
+        <div class="tryit">
+          <div class="tryit-header"><span>🗄 SQL Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetSQL('sq2')">↺ Reset</button><button class="tryit-btn run" onclick="runSQL('sq2')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="sq2">SELECT category, SUM(amount) AS total
+FROM transactions
+GROUP BY category</textarea>
+          <div class="tryit-output" id="sq2-out"><span class="out-info">Press ▶ Run to execute</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Change SUM to COUNT to see transactions per category.</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-amber">3</span> ORDER BY & LIMIT</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>What to learn</strong>ORDER BY sorts results. LIMIT returns top N rows — great for finding top spenders.</div>
+        <div class="tryit">
+          <div class="tryit-header"><span>🗄 SQL Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetSQL('sq3')">↺ Reset</button><button class="tryit-btn run" onclick="runSQL('sq3')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="sq3">SELECT customer, SUM(amount) AS total_spent
+FROM transactions
+GROUP BY customer
+ORDER BY total_spent DESC
+LIMIT 3</textarea>
+          <div class="tryit-output" id="sq3-out"><span class="out-info">Press ▶ Run to execute</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Remove LIMIT 3 to see all customers ranked by spending.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PYTHON -->
+  <div class="tool-section" id="python">
+    <div class="card"><h3>Python for Finance</h3><p>Edit and run real Python code. Each playground has a finance example — experiment freely.</p></div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">1</span> Variables & Finance Calculations</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="tryit">
+          <div class="tryit-header"><span>🐍 Python Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetPy('py1')">↺ Reset</button><button class="tryit-btn run" onclick="runPython('py1')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="py1"># Simple Interest Calculator
+principal = 100000
+rate = 8       # annual rate %
+time = 3       # years
+
+interest = principal * rate * time / 100
+total = principal + interest
+
+print(f"Principal:  ₹{principal:,}")
+print(f"Interest:   ₹{interest:,}")
+print(f"Total:      ₹{total:,}")</textarea>
+          <div class="tryit-output" id="py1-out"><span class="out-info">Press ▶ Run to execute</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Change principal to 500000 and rate to 12. What is the total after 5 years?</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">2</span> Lists & Loops</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="tryit">
+          <div class="tryit-header"><span>🐍 Python Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetPy('py2')">↺ Reset</button><button class="tryit-btn run" onclick="runPython('py2')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="py2"># Analyze monthly revenue
+revenue = [120000, 135000, 98000, 152000, 141000, 167000]
+months  = ["Jan","Feb","Mar","Apr","May","Jun"]
+
+total   = sum(revenue)
+average = total / len(revenue)
+highest = max(revenue)
+
+print(f"Total Revenue:   ₹{total:,}")
+print(f"Average Monthly: ₹{average:,.0f}")
+print(f"Best Month:      ₹{highest:,}")
+print()
+for i, m in enumerate(months):
+    flag = " ← best" if revenue[i] == highest else ""
+    print(f"  {m}: ₹{revenue[i]:,}{flag}")</textarea>
+          <div class="tryit-output" id="py2-out"><span class="out-info">Press ▶ Run to execute</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Add July with ₹180000. Does it become the best month?</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">3</span> Functions — Reusable Logic</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="tryit">
+          <div class="tryit-header"><span>🐍 Python Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetPy('py3')">↺ Reset</button><button class="tryit-btn run" onclick="runPython('py3')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="py3">def profit_margin(revenue, cost):
+    profit = revenue - cost
+    margin = (profit / revenue) * 100
+    return profit, round(margin, 2)
+
+def classify(margin):
+    if margin >= 30:
+        return "Excellent"
+    elif margin >= 15:
+        return "Good"
+    else:
+        return "Needs Improvement"
+
+scenarios = [
+    ("Product A", 500000, 320000),
+    ("Product B", 200000, 185000),
+    ("Product C", 750000, 480000),
+]
+
+for name, rev, cost in scenarios:
+    profit, margin = profit_margin(rev, cost)
+    grade = classify(margin)
+    print(f"{name}: Margin = {margin}% → {grade}")</textarea>
+          <div class="tryit-output" id="py3-out"><span class="out-info">Press ▶ Run to execute</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Add Product D with revenue ₹300000, cost ₹200000. What grade?</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-amber">4</span> Dictionaries — Finance Records</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="tryit">
+          <div class="tryit-header"><span>🐍 Python Playground</span><div class="tryit-btns"><button class="tryit-btn" onclick="resetPy('py4')">↺ Reset</button><button class="tryit-btn run" onclick="runPython('py4')">▶ Run</button></div></div>
+          <textarea class="tryit-editor" id="py4"># Department budget tracker
+budget = {
+    "Marketing":   500000,
+    "Engineering": 1200000,
+    "HR":          300000,
+    "Operations":  800000,
+}
+spent = {
+    "Marketing":   480000,
+    "Engineering": 950000,
+    "HR":          310000,
+    "Operations":  760000,
+}
+
+print(f"{'Dept':<15} {'Budget':>10} {'Spent':>10} {'Status':>14}")
+print("-" * 52)
+for dept in budget:
+    b, s = budget[dept], spent[dept]
+    diff = b - s
+    status = f"Over ₹{abs(diff):,}" if diff < 0 else f"₹{diff:,} left"
+    print(f"{dept:<15} ₹{b:>8,} ₹{s:>8,} {status:>14}")</textarea>
+          <div class="tryit-output" id="py4-out"><span class="out-info">Press ▶ Run to execute</span></div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Add Finance dept: budget ₹400000, spent ₹420000. Over budget?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POWER BI -->
+  <div class="tool-section" id="powerbi">
+    <div class="card"><h3>Power BI for Finance</h3><p>No code needed — drag and drop. Learn DAX formulas and dashboard layout used in real finance teams.</p></div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">1</span> DAX Formula Calculator</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>What to learn</strong>DAX creates custom measures in Power BI. These are the core finance metrics every dashboard needs.</div>
+        <div class="tryit">
+          <div class="tryit-header"><span>📊 Live DAX Tester</span><div class="tryit-btns"><button class="tryit-btn run" onclick="runDAX()">▶ Calculate</button></div></div>
+          <div style="padding:14px;background:#0a0d14">
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+              <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Total Revenue (₹)</label><input id="dax-rev" type="number" value="1500000" oninput="runDAX()" style="width:130px"></div>
+              <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Total Cost (₹)</label><input id="dax-cost" type="number" value="950000" oninput="runDAX()" style="width:130px"></div>
+              <div><label style="font-size:11px;color:#4a6a9e;display:block;margin-bottom:3px">Last Year Revenue (₹)</label><input id="dax-ly" type="number" value="1200000" oninput="runDAX()" style="width:140px"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap" id="dax-out"></div>
+          </div>
+          <div class="lesson" style="padding:12px 14px"><strong>Equivalent DAX in Power BI</strong>
+            <div class="code-block"><span class="cm">// These are the exact Power BI DAX measures</span>
+Gross Profit   = [Total Revenue] - [Total Cost]
+Profit Margin  = DIVIDE([Gross Profit], [Total Revenue]) * 100
+YoY Growth %   = DIVIDE([Revenue] - [LY Revenue], [LY Revenue]) * 100</div>
+          </div>
+          <div class="tryit-challenge"><strong>Challenge:</strong> Set revenue ₹20,00,000 and cost ₹12,00,000. What is the margin and YoY growth?</div>
+        </div>
+      </div>
+    </div>
+    <div class="topic-card">
+      <div class="topic-header" onclick="toggleTopic(this)"><div class="topic-title"><span class="badge b-green">2</span> Dashboard Layout Guide</div><span class="arrow">▾</span></div>
+      <div class="topic-body">
+        <div class="lesson"><strong>Standard finance dashboard structure</strong>
+          <div class="code-block">Row 1 — KPI Cards:
+  Total Revenue | Total Expenses | Net Profit | Margin %
+
+Row 2 — Trends + Breakdown:
+  Line chart (monthly revenue) | Donut (expense by category)
+
+Row 3 — Detail:
+  Matrix table with dept/month breakdown
+
+Top bar — Slicers:
+  Month | Region | Department</div>
+        </div>
+        <div class="tip">💡 Build a sample dashboard with Kaggle financial data and add it to your portfolio — it stands out in interviews.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div class="section" id="skills">
+  <div class="card">
+    <h3 style="margin-bottom:1.2rem">6-Month Learning Roadmap</h3>
+    <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Month 1 — Excel Mastery</h4><p>Pivot tables, VLOOKUP, NPV, PMT. Build a personal budget tracker.</p><span class="badge b-amber">4 weeks</span></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Month 2 — SQL Foundations</h4><p>SELECT, WHERE, GROUP BY, JOINs. Practice on SQLZoo finance datasets.</p><span class="badge b-amber">4 weeks</span></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Month 3 — Python Basics + Pandas</h4><p>Variables, loops, functions, then Pandas for data analysis.</p><span class="badge b-amber">4 weeks</span></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Month 4 — Data Visualization</h4><p>Power BI dashboards + Matplotlib in Python. Build a KPI dashboard project.</p><span class="badge b-amber">4 weeks</span></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Month 5 — Finance Domain</h4><p>P&L, balance sheets, ROI, EBITDA. Take a CFI or Coursera finance course.</p><span class="badge b-amber">4 weeks</span></div></div>
+    <div class="step"><div class="step-num">6</div><div class="step-body"><h4>Month 6 — Portfolio & Jobs</h4><p>Build 2–3 projects, update LinkedIn, practice interviews, apply for roles.</p><span class="badge b-amber">4 weeks</span></div></div>
+  </div>
+</div>
+
+<!-- RESOURCES -->
+<div class="section" id="resources">
+  <div class="card"><h3 style="margin-bottom:1rem">Excel</h3>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(63,185,80,0.12)">📗</div><div class="res-info"><h4>Excel Easy — excel-easy.com</h4><p>Best free beginner Excel tutorials</p></div><span class="free-tag">Free</span></div>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(56,139,253,0.12)">🎓</div><div class="res-info"><h4>Excel Skills for Business — Coursera</h4><p>Macquarie University — highly rated</p></div><span class="free-tag">Free Audit</span></div>
+  </div>
+  <div class="card"><h3 style="margin-bottom:1rem">SQL</h3>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(63,185,80,0.12)">🟢</div><div class="res-info"><h4>SQLZoo — sqlzoo.net</h4><p>Interactive SQL with finance exercises</p></div><span class="free-tag">Free</span></div>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(56,139,253,0.12)">🎓</div><div class="res-info"><h4>SQL for Data Science — Coursera (UC Davis)</h4><p>Beginner to intermediate</p></div><span class="free-tag">Free Audit</span></div>
+  </div>
+  <div class="card"><h3 style="margin-bottom:1rem">Python</h3>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(210,153,34,0.12)">🐍</div><div class="res-info"><h4>Python for Everybody — Coursera</h4><p>Best for absolute beginners</p></div><span class="free-tag">Free Audit</span></div>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(63,185,80,0.12)">📘</div><div class="res-info"><h4>Kaggle Python & Pandas Course</h4><p>Hands-on with real datasets</p></div><span class="free-tag">Free</span></div>
+  </div>
+  <div class="card"><h3 style="margin-bottom:1rem">Power BI & Finance</h3>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(56,139,253,0.12)">📊</div><div class="res-info"><h4>Microsoft Power BI Learning Path</h4><p>Official free training by Microsoft</p></div><span class="free-tag">Free</span></div>
+    <div class="resource-card"><div class="res-icon" style="background:rgba(139,92,246,0.12)">📙</div><div class="res-info"><h4>Financial Markets — Coursera (Yale)</h4><p>Prof. Robert Shiller — world class</p></div><span class="free-tag">Free Audit</span></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="section" id="quiz">
+  <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+  <div id="quiz-container"></div>
+</div>
+
+<script>
+function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');if(id==='quiz')initQuiz();}
+function showTool(id,el){document.querySelectorAll('.tnav').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tool-section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');el.classList.add('active');}
+function toggleTopic(h){const b=h.nextElementSibling,open=b.classList.contains('open');document.querySelectorAll('.topic-body').forEach(x=>x.classList.remove('open'));document.querySelectorAll('.topic-header').forEach(x=>x.classList.remove('open'));if(!open){b.classList.add('open');h.classList.add('open');}}
+
+// Excel
+function xlCalc(){const ids=['xl1b1','xl1b2','xl1b3','xl1b4','xl1b5'];const vals=ids.map(id=>parseFloat(document.getElementById(id).value)||0);const total=vals.reduce((a,b)=>a+b,0);const avg=total/vals.length;const mx=Math.max(...vals);document.getElementById('xl1-result').innerHTML=`=SUM → <strong>₹${total.toLocaleString('en-IN')}</strong> &nbsp;|&nbsp; =AVERAGE → <strong>₹${avg.toLocaleString('en-IN',{maximumFractionDigits:0})}</strong> &nbsp;|&nbsp; =MAX → <strong>₹${mx.toLocaleString('en-IN')}</strong>`;}
+function ifCalc(){const thr=parseFloat(document.getElementById('if-threshold').value)||10000;let high=0;['1','2','3','4'].forEach(i=>{const v=parseFloat(document.getElementById('ifb'+i).value)||0;const r=v>thr?'High':'Low';document.getElementById('ifc'+i).value=r;document.getElementById('ifc'+i).style.color=r==='High'?'#f85149':'#56d364';if(r==='High')high++;});document.getElementById('if-result').innerHTML=`<span style="font-size:12px;color:#7d9bc0">${high} expense(s) flagged High (above ₹${thr.toLocaleString('en-IN')})</span>`;}
+function npvCalc(){const r=parseFloat(document.getElementById('npv-rate').value)/100||0.1;const cfs=[parseFloat(document.getElementById('npv-y1').value)||0,parseFloat(document.getElementById('npv-y2').value)||0,parseFloat(document.getElementById('npv-y3').value)||0];const npv=cfs.reduce((s,cf,i)=>s+cf/Math.pow(1+r,i+1),0);document.getElementById('npv-result').innerHTML=`=NPV(${(r*100).toFixed(0)}%, cashflows) = <strong>₹${Math.round(npv).toLocaleString('en-IN')}</strong>`;}
+function pmtCalc(){const p=parseFloat(document.getElementById('pmt-p').value)||0;const r=parseFloat(document.getElementById('pmt-r').value)/100/12||0;const n=parseFloat(document.getElementById('pmt-n').value)*12||1;const pmt=r===0?p/n:p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);document.getElementById('pmt-result').innerHTML=`Monthly EMI = <strong>₹${Math.round(pmt).toLocaleString('en-IN')}</strong>`;}
+
+// SQL
+const DB={transactions:[
+  {id:1,customer:'Priya',category:'Food',amount:4500,month:'Jan'},
+  {id:2,customer:'Ravi',category:'Travel',amount:22000,month:'Jan'},
+  {id:3,customer:'Ananya',category:'Food',amount:3200,month:'Feb'},
+  {id:4,customer:'Karthik',category:'Housing',amount:45000,month:'Feb'},
+  {id:5,customer:'Priya',category:'Travel',amount:8000,month:'Mar'},
+  {id:6,customer:'Ravi',category:'Food',amount:5100,month:'Mar'},
+]};
+const sqlDefaults={sq1:"SELECT * FROM transactions WHERE amount > 5000",sq2:"SELECT category, SUM(amount) AS total\nFROM transactions\nGROUP BY category",sq3:"SELECT customer, SUM(amount) AS total_spent\nFROM transactions\nGROUP BY customer\nORDER BY total_spent DESC\nLIMIT 3"};
+function resetSQL(id){document.getElementById(id).value=sqlDefaults[id];document.getElementById(id+'-out').innerHTML='<span class="out-info">Press ▶ Run to execute</span>';}
+function runSQL(id){const q=document.getElementById(id).value.trim();const out=document.getElementById(id+'-out');try{let rows=[...DB.transactions];const qu=q.toUpperCase();
+const wm=qu.match(/WHERE\s+(\w+)\s*(=|>|<|>=|<=|!=)\s*['"']?([^'"'\s]+)['"']?/i);if(wm){const[,col,op,val]=wm;const num=parseFloat(val);rows=rows.filter(r=>{const rv=r[col.toLowerCase()];const lv=isNaN(num)?val.replace(/['"]/g,'').toLowerCase():num;const rr=isNaN(num)?String(rv).toLowerCase():parseFloat(rv);if(op==='=')return rr===lv;if(op==='>')return rr>lv;if(op==='<')return rr<lv;if(op==='>=')return rr>=lv;if(op==='<=')return rr<=lv;return rr!==lv;});}
+const gm=qu.match(/GROUP\s+BY\s+(\w+)/i);const sm=qu.match(/SELECT\s+(.+?)\s+FROM/i);let cols=sm?sm[1].split(',').map(s=>s.trim()):['*'];
+if(gm){const gc=gm[1].toLowerCase();const agg={};rows.forEach(r=>{const k=r[gc];if(!agg[k])agg[k]={[gc]:k,_count:0,_sum:0};agg[k]._count++;agg[k]._sum+=r.amount;});Object.values(agg).forEach(a=>{a.total=a._sum;a.total_spent=a._sum;a.count=a._count;});rows=Object.values(agg);}
+const om=qu.match(/ORDER\s+BY\s+(\w+)\s*(ASC|DESC)?/i);if(om){const oc=om[1].toLowerCase();const dir=om[2]&&om[2]==='ASC'?1:-1;rows.sort((a,b)=>(a[oc]>b[oc]?1:-1)*dir);}
+const lm=qu.match(/LIMIT\s+(\d+)/i);if(lm)rows=rows.slice(0,parseInt(lm[1]));
+if(cols[0]!=='*'&&!cols[0].includes('*')){const keys=cols.map(c=>{const am=c.match(/\w+\((\w+)\)\s+AS\s+(\w+)/i)||c.match(/(\w+)\s+AS\s+(\w+)/i);return am?am[2].toLowerCase():c.replace(/\w+\((\w+)\)/i,'$1').toLowerCase().trim();});rows=rows.map(r=>{const nr={};keys.forEach(k=>{if(r[k]!==undefined)nr[k]=r[k];});return nr;});}
+if(!rows.length){out.innerHTML='<span class="out-warn">No rows returned.</span>';return;}
+const allKeys=Object.keys(rows[0]).filter(k=>!k.startsWith('_'));
+let html=`<span class="out-success">${rows.length} row(s):\n</span>`;
+html+=allKeys.join('\t')+'\n'+'─'.repeat(Math.max(30,allKeys.join('\t').length))+'\n';
+rows.forEach(r=>html+=allKeys.map(k=>String(r[k]??'')).join('\t')+'\n');
+out.textContent='';const span=document.createElement('span');span.className='out-success';span.textContent=`${rows.length} row(s) returned:\n`;out.appendChild(span);out.appendChild(document.createTextNode(allKeys.join('\t')+'\n'+'─'.repeat(30)+'\n'+rows.map(r=>allKeys.map(k=>String(r[k]??'')).join('\t')).join('\n')));}catch(e){out.innerHTML=`<span class="out-error">Error: ${e.message}</span>`;}}
+
+// Python
+const pyDefaults={
+py1:`# Simple Interest Calculator\nprincipal = 100000\nrate = 8       # annual rate %\ntime = 3       # years\n\ninterest = principal * rate * time / 100\ntotal = principal + interest\n\nprint(f"Principal:  ₹{principal:,}")\nprint(f"Interest:   ₹{interest:,}")\nprint(f"Total:      ₹{total:,}")`,
+py2:`# Analyze monthly revenue\nrevenue = [120000, 135000, 98000, 152000, 141000, 167000]\nmonths  = ["Jan","Feb","Mar","Apr","May","Jun"]\n\ntotal   = sum(revenue)\naverage = total / len(revenue)\nhighest = max(revenue)\n\nprint(f"Total Revenue:   ₹{total:,}")\nprint(f"Average Monthly: ₹{average:,.0f}")\nprint(f"Best Month:      ₹{highest:,}")\nprint()\nfor i, m in enumerate(months):\n    flag = " ← best" if revenue[i] == highest else ""\n    print(f"  {m}: ₹{revenue[i]:,}{flag}")`,
+py3:`def profit_margin(revenue, cost):\n    profit = revenue - cost\n    margin = (profit / revenue) * 100\n    return profit, round(margin, 2)\n\ndef classify(margin):\n    if margin >= 30:\n        return "Excellent"\n    elif margin >= 15:\n        return "Good"\n    else:\n        return "Needs Improvement"\n\nscenarios = [\n    ("Product A", 500000, 320000),\n    ("Product B", 200000, 185000),\n    ("Product C", 750000, 480000),\n]\n\nfor name, rev, cost in scenarios:\n    profit, margin = profit_margin(rev, cost)\n    grade = classify(margin)\n    print(f"{name}: Margin = {margin}% → {grade}")`,
+py4:`# Department budget tracker\nbudget = {\n    "Marketing":   500000,\n    "Engineering": 1200000,\n    "HR":          300000,\n    "Operations":  800000,\n}\nspent = {\n    "Marketing":   480000,\n    "Engineering": 950000,\n    "HR":          310000,\n    "Operations":  760000,\n}\n\nprint(f"{'Dept':<15} {'Budget':>10} {'Spent':>10} {'Status':>14}")\nprint("-" * 52)\nfor dept in budget:\n    b, s = budget[dept], spent[dept]\n    diff = b - s\n    status = f"Over ₹{abs(diff):,}" if diff < 0 else f"₹{diff:,} left"\n    print(f"{dept:<15} ₹{b:>8,} ₹{s:>8,} {status:>14}")`};
+function resetPy(id){document.getElementById(id).value=pyDefaults[id];document.getElementById(id+'-out').innerHTML='<span class="out-info">Press ▶ Run to execute</span>';}
+function runPython(id){
+  const code=document.getElementById(id).value;const out=document.getElementById(id+'-out');
+  try{
+    let js=code;
+    js=js.replace(/#.*$/gm,'');
+    js=js.replace(/def (\w+)\(([^)]*)\):/g,'function $1($2){');
+    js=js.replace(/\belif\b/g,'} else if');js=js.replace(/\belse:/g,'} else {');
+    js=js.replace(/\bif (.+?):/g,'if ($1) {');
+    js=js.replace(/\bfor (\w+), (\w+) in enumerate\((\w+)\):/g,'for (let _ei=0;_ei<$3.length;_ei++){let $1=_ei,$2=$3[_ei];');
+    js=js.replace(/\bfor (\w+) in (\w+):/g,'for (let $1 of Object.keys($2)){');
+    js=js.replace(/f"([^"]*)"/g,(m,s)=>'`'+s.replace(/\{([^}]+):,\}/g,(m,e)=>'${Number('+e+').toLocaleString("en-IN")}').replace(/\{([^}]+):>(\d+)\}/g,'${String($1).padStart($2)}').replace(/\{([^}]+):<(\d+)\}/g,'${String($1).padEnd($2)}').replace(/\{([^}]+):,.0f\}/g,'${Math.round($1).toLocaleString("en-IN")}').replace(/\{([^}]+)\}/g,'${$1}')+'`');
+    js=js.replace(/f'([^']*)'/g,(m,s)=>'`'+s.replace(/\{([^}]+)\}/g,'${$1}')+'`');
+    js=js.replace(/print\(([^)]+)\)/g,'_out.push($1)');
+    js=js.replace(/\blen\((\w+)\)/g,'$1.length');js=js.replace(/\bsum\((\w+)\)/g,'$1.reduce((a,b)=>a+b,0)');
+    js=js.replace(/\bmax\((\w+)\)/g,'Math.max(...$1)');js=js.replace(/\bmin\((\w+)\)/g,'Math.min(...$1)');
+    js=js.replace(/\babs\(([^)]+)\)/g,'Math.abs($1)');js=js.replace(/\bround\(([^,]+),\s*(\d+)\)/g,'parseFloat($1.toFixed($2))');
+    js=js.replace(/\bstr\(([^)]+)\)/g,'String($1)');
+    js=js.replace(/True/g,'true');js=js.replace(/False/g,'false');js=js.replace(/None/g,'null');
+    const inL=js.split('\n');const outL=[];const stk=[];
+    inL.forEach(line=>{const s=line.trimStart();const ind=line.length-s.length;while(stk.length&&stk[stk.length-1]>=ind){outL.push('}');stk.pop();}if(/^(if|for|else|function|while)\b/.test(s)||s.endsWith('{')){stk.push(ind+2);}outL.push(line);});
+    while(stk.length){outL.push('}');stk.pop();}
+    const _out=[];new Function('_out',outL.join('\n'))(_out);
+    out.textContent=_out.join('\n')||'(no output)';out.className='tryit-output out-success';
+  }catch(e){out.innerHTML=`<span class="out-error">Error: ${e.message}</span>`;out.className='tryit-output';}}
+
+// DAX
+function runDAX(){const rev=parseFloat(document.getElementById('dax-rev').value)||0;const cost=parseFloat(document.getElementById('dax-cost').value)||0;const ly=parseFloat(document.getElementById('dax-ly').value)||1;const profit=rev-cost;const margin=(profit/rev*100).toFixed(1);const yoy=((rev-ly)/ly*100).toFixed(1);const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN');document.getElementById('dax-out').innerHTML=`
+<div class="dax-metric"><div class="dax-label">Gross Profit</div><div class="dax-val" style="color:#79b8ff">${fmt(profit)}</div></div>
+<div class="dax-metric"><div class="dax-label">Profit Margin %</div><div class="dax-val" style="color:#56d364">${margin}%</div></div>
+<div class="dax-metric"><div class="dax-label">YoY Growth %</div><div class="dax-val" style="color:#e3b341">${yoy}%</div></div>`;}
+
+// Quiz
+const questions=[
+  {q:"In Excel, which function totals a range of cells?",opts:["AVERAGE","COUNT","SUM","VLOOKUP"],ans:2,exp:"SUM adds all values in a range. =SUM(B2:B6) adds cells B2 through B6."},
+  {q:"In SQL, which clause filters rows from a table?",opts:["GROUP BY","ORDER BY","WHERE","HAVING"],ans:2,exp:"WHERE filters rows before grouping. Example: WHERE amount > 5000"},
+  {q:"In Python, which built-in function adds all items in a list?",opts:["total()","add()","sum()","plus()"],ans:2,exp:"sum(list) adds all numeric items. sum([1,2,3]) returns 6."},
+  {q:"What does NPV stand for in finance?",opts:["Number of Payments","Net Present Value","Nominal Price Value","New Profit Variance"],ans:1,exp:"NPV = Net Present Value. It calculates the value today of future cash flows at a given discount rate."},
+  {q:"In SQL, GROUP BY + SUM is equivalent to which Excel feature?",opts:["VLOOKUP","IF formula","Pivot Table","Conditional Formatting"],ans:2,exp:"Both summarize data by category — GROUP BY in SQL, Pivot Tables in Excel."},
+  {q:"In Python, what does len(list) return?",opts:["The largest item","The sum","The number of items","The first item"],ans:2,exp:"len() returns the count of items. len([10,20,30]) returns 3."},
+  {q:"In Power BI, which function safely divides without divide-by-zero errors?",opts:["DIVIDE()","CALCULATE()","SUMX()","FILTER()"],ans:0,exp:"DIVIDE(numerator, denominator) returns blank or a custom value when denominator is 0."},
+  {q:"Which Excel function calculates monthly loan repayment (EMI)?",opts:["NPV","IRR","PMT","FV"],ans:2,exp:"PMT(rate, nper, pv) calculates the fixed periodic payment for a loan."},
+];
+let cur=0,score=0,answered=false;
+function initQuiz(){cur=0;score=0;answered=false;renderQ();}
+function renderQ(){const c=document.getElementById('quiz-container');document.getElementById('progress').style.width=Math.round(cur/questions.length*100)+'%';if(cur>=questions.length){c.innerHTML=`<div class="score-box"><h2>${score}/${questions.length}</h2><p>${score>=6?'Excellent! You have strong tool knowledge for a finance analyst career.':score>=4?'Good effort! Review the Learn & Practice section and try again.':'Keep practising — work through the playgrounds and retake.'}</p><button class="opt" style="max-width:180px;margin:1rem auto;text-align:center" onclick="initQuiz()">↺ Retake Quiz</button></div>`;document.getElementById('progress').style.width='100%';return;}
+const q=questions[cur];answered=false;c.innerHTML=`<div class="card"><p style="font-size:12px;color:#4a6a9e;margin-bottom:8px">Question ${cur+1} of ${questions.length}</p><p class="quiz-q">${q.q}</p>${q.opts.map((o,i)=>`<button class="opt" onclick="answer(${i})">${o}</button>`).join('')}<div class="quiz-feedback" id="feedback"></div></div>`;}
+function answer(i){if(answered)return;answered=true;const q=questions[cur];const opts=document.querySelectorAll('.opt');opts[q.ans].classList.add('correct');if(i!==q.ans)opts[i].classList.add('wrong');else score++;const fb=document.getElementById('feedback');fb.textContent=(i===q.ans?'✓ Correct! ':'✗ Incorrect. ')+q.exp;fb.className='quiz-feedback show '+(i===q.ans?'feedback-correct':'feedback-wrong');opts.forEach(o=>o.onclick=null);const nb=document.createElement('button');nb.className='opt';nb.style.cssText='max-width:200px;margin-top:4px';nb.textContent=cur===questions.length-1?'See Results →':'Next Question →';nb.onclick=()=>{cur++;renderQ();};document.querySelector('.card').appendChild(nb);}
+
+// Init
+xlCalc();ifCalc();npvCalc();pmtCalc();runDAX();
+</script>
