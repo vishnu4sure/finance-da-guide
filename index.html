@@ -672,11 +672,19 @@ function toggleTopic(h){const b=h.nextElementSibling,open=b.classList.contains('
 
 // --- PROGRESS ---
 const TOPICS=['xl1','xl2','xl3','sq1','sq2','sq3','py1','py2','py3','py4','pbi1','pbi2'];
-let done=new Set();
+let done=new Set(JSON.parse(localStorage.getItem('fda_done')||'[]'));
 function markDone(id){
   const btn=document.getElementById('cb-'+id);
   if(done.has(id)){done.delete(id);btn.textContent='☐ Mark as Complete';btn.classList.remove('done');}
   else{done.add(id);btn.textContent='✓ Completed!';btn.classList.add('done');}
+  localStorage.setItem('fda_done',JSON.stringify([...done]));
+  updateOverall();
+}
+function restoreProgress(){
+  done.forEach(id=>{
+    const btn=document.getElementById('cb-'+id);
+    if(btn){btn.textContent='✓ Completed!';btn.classList.add('done');}
+  });
   updateOverall();
 }
 function updateOverall(){
@@ -832,8 +840,12 @@ function toggleIQ(el){const a=el.nextElementSibling,open=a.classList.contains('o
 
 // --- CERTIFICATE ---
 let certUnlocked=false;
-function unlockCert(){certUnlocked=true;updateCertStatus();}
-function updateCert(){document.getElementById('cert-recipient').textContent=document.getElementById('cert-name').value||'Your Name';}
+function unlockCert(){certUnlocked=true;localStorage.setItem('fda_cert_unlocked','true');updateCertStatus();}
+function updateCert(){
+  const name=document.getElementById('cert-name').value||'Your Name';
+  document.getElementById('cert-recipient').textContent=name;
+  localStorage.setItem('fda_cert_name',name);
+}
 function updateCertStatus(){
   const pct=Math.round(done.size/TOPICS.length*100);
   const el=document.getElementById('cert-status');
@@ -853,4 +865,11 @@ function printCert(){
 xlCalc();ifCalc();npvCalc();pmtCalc();runDAX();renderGloss(glossTerms);renderIQ();
 document.getElementById('cert-date').textContent=new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long'});
 updateCertStatus();
+restoreProgress();
+// Restore certificate name
+const savedName=localStorage.getItem('fda_cert_name');
+if(savedName){document.getElementById('cert-name').value=savedName;document.getElementById('cert-recipient').textContent=savedName;}
+// Restore quiz score unlock
+if(localStorage.getItem('fda_cert_unlocked')==='true'){certUnlocked=true;updateCertStatus();}
+
 </script>
