@@ -170,6 +170,22 @@ input[type=number],input[type=text]{background:#0f1420;border:1px solid #1e2d45;
 input[type=number]:focus,input[type=text]:focus{border-color:#2a4a7f}
 </style>
 
+<!-- WELCOME SCREEN -->
+<div id="welcome-screen" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0d14;z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:2rem">
+  <div style="max-width:420px;width:100%;text-align:center">
+    <div style="font-size:48px;margin-bottom:1rem">📊</div>
+    <h1 style="font-size:22px;font-weight:600;color:#fff;margin-bottom:8px">Finance Data Analyst Career Guide</h1>
+    <p style="font-size:13px;color:#7d9bc0;margin-bottom:2rem">Your complete roadmap to becoming a Data Analyst in the Finance sector</p>
+    <div style="background:#161b27;border:1px solid #1e2d45;border-radius:14px;padding:1.5rem">
+      <div style="font-size:15px;font-weight:500;color:#c9d8ef;margin-bottom:6px">Welcome! What's your name?</div>
+      <div style="font-size:13px;color:#4a6a9e;margin-bottom:1rem">We'll personalise your learning experience</div>
+      <input id="welcome-name" type="text" placeholder="Enter your name..." style="width:100%;background:#0a0d14;border:1px solid #1e2d45;color:#c9d8ef;border-radius:8px;padding:10px 14px;font-size:14px;outline:none;margin-bottom:12px;text-align:center" onkeydown="if(event.key==='Enter')startApp()">
+      <button onclick="startApp()" style="width:100%;padding:12px;background:linear-gradient(135deg,#1a4b8c,#1565c0);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s">Start Learning →</button>
+      <div style="margin-top:10px"><button onclick="startApp(true)" style="background:none;border:none;color:#4a6a9e;font-size:12px;cursor:pointer;text-decoration:underline">Skip for now</button></div>
+    </div>
+  </div>
+</div>
+
 <div class="hero">
   <h1>Finance Data Analyst Career Guide</h1>
   <p>Learn, practice, and get job-ready in the Finance sector</p>
@@ -177,7 +193,7 @@ input[type=number]:focus,input[type=text]:focus{border-color:#2a4a7f}
     <span class="hero-tag">Excel</span><span class="hero-tag">SQL</span><span class="hero-tag">Python</span><span class="hero-tag">Power BI</span><span class="hero-tag">AI Tutor</span><span class="hero-tag">Certificate</span>
   </div>
   <div class="progress-overview">
-    <span>Overall Progress:</span>
+    <span>Hey <strong id="hero-name">there</strong>! Progress:</span>
     <div class="prog-bar-outer"><div class="prog-bar-inner" id="overall-bar" style="width:0%"></div></div>
     <strong id="overall-pct">0%</strong>
   </div>
@@ -594,22 +610,35 @@ Top — Slicers: Month | Region | Department</div></div>
 
 <!-- AI TUTOR -->
 <div class="section" id="tutor">
-  <div class="card" style="margin-bottom:1rem"><h3>AI Finance Tutor</h3><p>Ask anything about Excel, SQL, Python, Power BI, or finance concepts. Get instant answers.</p></div>
-  <div class="chat-wrap">
-    <div class="chat-msgs" id="chat-msgs">
-      <div class="msg ai">Hi! I'm your Finance Data Analyst tutor. Ask me anything — Excel formulas, SQL queries, Python code, finance terms, or career advice. I'm here to help!</div>
+  <div class="card" style="margin-bottom:1rem">
+    <h3>AI Finance Tutor</h3>
+    <p>Type your question below and it will open Claude AI with your question pre-filled. Get expert answers instantly!</p>
+  </div>
+  <div style="background:#0f1420;border:1px solid #1e2d45;border-radius:14px;overflow:hidden">
+    <div style="padding:1.5rem;text-align:center;border-bottom:1px solid #1e2d45">
+      <div style="font-size:40px;margin-bottom:10px">🤖</div>
+      <div style="font-size:15px;font-weight:500;color:#c9d8ef;margin-bottom:6px">Ask the Finance AI Tutor</div>
+      <div style="font-size:13px;color:#4a6a9e">Type your question and click Ask — Claude AI will answer it for you</div>
     </div>
-    <div class="quick-qs">
-      <span style="font-size:11px;color:#4a6a9e;margin-right:4px">Quick:</span>
-      <button class="quick-q" onclick="quickAsk('What is VLOOKUP and when should I use it?')">VLOOKUP?</button>
-      <button class="quick-q" onclick="quickAsk('Explain GROUP BY in SQL with an example')">GROUP BY?</button>
-      <button class="quick-q" onclick="quickAsk('What is EBITDA in finance?')">EBITDA?</button>
-      <button class="quick-q" onclick="quickAsk('How do I start learning Python for finance?')">Start Python?</button>
-      <button class="quick-q" onclick="quickAsk('What skills do I need for a junior finance data analyst role?')">Junior DA skills?</button>
+    <div style="padding:1rem">
+      <div style="display:flex;gap:8px;margin-bottom:1rem">
+        <input id="tutor-input" class="chat-input" placeholder="e.g. What is VLOOKUP? How do I write a GROUP BY query?" style="flex:1;background:#0a0d14;border:1px solid #1e2d45;color:#c9d8ef;border-radius:8px;padding:10px 14px;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')askClaude()">
+        <button class="chat-send" onclick="askClaude()" style="padding:10px 20px;background:linear-gradient(135deg,#1a4b8c,#1565c0);color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;white-space:nowrap">Ask Claude ↗</button>
+      </div>
+      <div style="font-size:12px;color:#4a6a9e;margin-bottom:1rem">Quick questions — click to ask instantly:</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="quick-q" onclick="askClaudeQ('What is VLOOKUP in Excel and when should I use it in finance?')">What is VLOOKUP?</button>
+        <button class="quick-q" onclick="askClaudeQ('Explain GROUP BY in SQL with a finance example')">GROUP BY in SQL?</button>
+        <button class="quick-q" onclick="askClaudeQ('What is EBITDA and how is it used in finance?')">What is EBITDA?</button>
+        <button class="quick-q" onclick="askClaudeQ('How do I start learning Python for a finance data analyst role?')">Start Python?</button>
+        <button class="quick-q" onclick="askClaudeQ('What skills do I need to become a junior finance data analyst?')">Junior DA skills?</button>
+        <button class="quick-q" onclick="askClaudeQ('What is the difference between NPV and IRR in finance?')">NPV vs IRR?</button>
+        <button class="quick-q" onclick="askClaudeQ('How do I build a financial dashboard in Power BI?')">Power BI dashboard?</button>
+        <button class="quick-q" onclick="askClaudeQ('What is a Pivot Table and how do I use it in Excel for finance?')">Pivot Tables?</button>
+      </div>
     </div>
-    <div class="chat-input-row">
-      <input class="chat-input" id="chat-input" placeholder="Ask a question..." onkeydown="if(event.key==='Enter')sendChat()">
-      <button class="chat-send" onclick="sendChat()">Send ↗</button>
+    <div style="padding:10px 16px;background:#0a0d14;border-top:1px solid #1a2236;font-size:11px;color:#2a4a7f;text-align:center">
+      Powered by Claude AI — opens in a new tab at claude.ai
     </div>
   </div>
 </div>
@@ -763,23 +792,16 @@ function renderQ(){const c=document.getElementById('quiz-container');document.ge
 const q=questions[cur];answered=false;c.innerHTML=`<div class="card"><p style="font-size:12px;color:#4a6a9e;margin-bottom:8px">Question ${cur+1} of ${questions.length}</p><p class="quiz-q">${q.q}</p>${q.opts.map((o,i)=>`<button class="opt" onclick="answer(${i})">${o}</button>`).join('')}<div class="quiz-feedback" id="feedback"></div></div>`;}
 function answer(i){if(answered)return;answered=true;const q=questions[cur];const opts=document.querySelectorAll('#quiz-container .opt');opts[q.ans].classList.add('correct');if(i!==q.ans)opts[i].classList.add('wrong');else quizScore++;const fb=document.getElementById('feedback');fb.textContent=(i===q.ans?'✓ Correct! ':'✗ Incorrect. ')+q.exp;fb.className='quiz-feedback show '+(i===q.ans?'feedback-correct':'feedback-wrong');opts.forEach(o=>o.onclick=null);const nb=document.createElement('button');nb.className='opt';nb.style.cssText='max-width:220px;margin-top:12px;background:linear-gradient(135deg,#1a4b8c,#1565c0);color:#fff;border-color:#1565c0;font-weight:500;display:block';nb.textContent=cur===questions.length-1?'See Results →':'Next Question →';nb.onclick=()=>{cur++;renderQ();};document.getElementById('quiz-container').querySelector('.card').appendChild(nb);}
 
-// --- AI TUTOR ---
-let chatLocked=false;
-async function sendChat(){
-  if(chatLocked)return;
-  const inp=document.getElementById('chat-input');const q=inp.value.trim();if(!q)return;
-  inp.value='';addMsg(q,'user');
-  const thinking=addMsg('Thinking...','ai thinking');chatLocked=true;
-  try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:`You are a friendly Finance Data Analyst tutor. Answer questions clearly and concisely for beginners. Focus on Excel, SQL, Python, Power BI, and finance concepts like P&L, ROI, EBITDA. Use ₹ for Indian currency examples. Keep answers under 150 words. Use bullet points when listing steps. Always encourage the learner.`,messages:[{role:'user',content:q}]})});
-    const data=await res.json();
-    const reply=data.content?.[0]?.text||'Sorry, I could not answer that. Please try again.';
-    thinking.textContent=reply;thinking.classList.remove('thinking');
-  }catch(e){thinking.textContent='Connection error. Please try again.';thinking.classList.remove('thinking');}
-  chatLocked=false;
+function askClaude(){
+  const q=document.getElementById('tutor-input').value.trim();
+  if(!q)return;
+  const prompt=`I am learning to become a Finance Data Analyst. Please help me with this question: ${q}`;
+  window.open(`https://claude.ai/new?q=${encodeURIComponent(prompt)}`,'_blank');
 }
-function addMsg(text,cls){const msgs=document.getElementById('chat-msgs');const div=document.createElement('div');div.className=`msg ${cls}`;div.textContent=text;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;return div;}
-function quickAsk(q){document.getElementById('chat-input').value=q;sendChat();}
+function askClaudeQ(q){
+  const prompt=`I am learning to become a Finance Data Analyst. Please help me with this question: ${q}`;
+  window.open(`https://claude.ai/new?q=${encodeURIComponent(prompt)}`,'_blank');
+}
 
 // --- GLOSSARY ---
 const glossTerms=[
@@ -861,15 +883,30 @@ function printCert(){
   w.document.close();setTimeout(()=>w.print(),500);
 }
 
+// --- WELCOME ---
+function startApp(skip){
+  const name=document.getElementById('welcome-name').value.trim();
+  const finalName=skip||!name?'Learner':name;
+  localStorage.setItem('fda_username',finalName);
+  applyUsername(finalName);
+  document.getElementById('welcome-screen').style.display='none';
+}
+function applyUsername(name){
+  document.getElementById('hero-name').textContent=name;
+  const certName=document.getElementById('cert-name');
+  if(certName&&!certName.value){certName.value=name;document.getElementById('cert-recipient').textContent=name;}
+}
+
 // --- INIT ---
 xlCalc();ifCalc();npvCalc();pmtCalc();runDAX();renderGloss(glossTerms);renderIQ();
 document.getElementById('cert-date').textContent=new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long'});
 updateCertStatus();
 restoreProgress();
-// Restore certificate name
-const savedName=localStorage.getItem('fda_cert_name');
-if(savedName){document.getElementById('cert-name').value=savedName;document.getElementById('cert-recipient').textContent=savedName;}
-// Restore quiz score unlock
+const savedName=localStorage.getItem('fda_username');
+if(savedName){applyUsername(savedName);document.getElementById('welcome-screen').style.display='none';}
+else{document.getElementById('welcome-screen').style.display='flex';}
+const savedCertName=localStorage.getItem('fda_cert_name');
+if(savedCertName){document.getElementById('cert-name').value=savedCertName;document.getElementById('cert-recipient').textContent=savedCertName;}
 if(localStorage.getItem('fda_cert_unlocked')==='true'){certUnlocked=true;updateCertStatus();}
 
 </script>
